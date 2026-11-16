@@ -32,6 +32,8 @@ If you already have the six exact weights, omit `--download-models`. Use `--chec
 
 ### Reproduce the three AI-generated demonstrations
 
+[Watch the demo on X](https://x.com/Xmaxkoi/status/2122289135780343809)
+
 | Demonstration | Canvas and prompt | Time | Whole-GPU VRAM | System RAM |
 | --- | --- | ---: | ---: | ---: |
 | 01 · Print-shop dialogue | H3-08 defaults, [prompt](prompts/print-shop.txt) | 192.30 s | 8.32 GiB | 14.51 GiB |
