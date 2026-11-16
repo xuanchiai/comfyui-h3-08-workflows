@@ -2,12 +2,14 @@
 
 **English** · [简体中文](README.zh-CN.md)
 
-Two MiniMax H3 image-to-video workflows for ten-second dialogue shots with native audio. Both sample on the 1920 × 1088 model grid and produce a **1920 × 1080, 24 fps, 240-frame MP4** and an AV latent archive.
+Two ten-second MiniMax H3 image-to-video presets with native audio. Both sample on the 1920 × 1088 model grid and produce a **1920 × 1080, 24 fps, 240-frame MP4** and an AV latent archive.
 
-| Workflow | Video attention by step | When to use |
-| --- | --- | --- |
-| [H3-08](ComfyUI/user/default/workflows/05-图生视频/H3-人像图生视频/H3-08.json) | 29% / 7% / 7% | Everyday dialogue. Opens with the print-shop scene. |
-| [H3-08B](ComfyUI/user/default/workflows/05-图生视频/H3-人像图生视频/H3-08B.json) | 29% / 15% / 7% | Alternate preset for motion. Opens with the 2K basketball court. |
+| Workflow | Video attention by step | Default example | Benchmarked scenes |
+| --- | --- | --- | --- |
+| [H3-08](ComfyUI/user/default/workflows/05-图生视频/H3-人像图生视频/H3-08.json) | 29% / 7% / 7% | Print-shop dialogue | Print shop and basketball court (small movements and wide dolly) |
+| [H3-08B](ComfyUI/user/default/workflows/05-图生视频/H3-人像图生视频/H3-08B.json) | 29% / 15% / 7% | 2K basketball court | Basketball court (small movements and wide dolly) |
+
+Both presets accept a different first frame and prompt. The benchmarks below cover the sample scenes listed above.
 
 ## Install and run
 
