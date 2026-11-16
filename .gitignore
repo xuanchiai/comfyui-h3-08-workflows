@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+*.safetensors
+*.h3-part
+ComfyUI/output/
+ComfyUI/models/
+

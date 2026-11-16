@@ -1,0 +1,7 @@
+For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.
+
+integrated_multimodal_description: [Shot 1] Live-action Chinese drama in the print shop of <Picture 1>. A continuous eye-level medium two-shot frames the woman in green (S1) on the left and the man in navy (S2) on the right. Both faces and shoulders are clearly in focus. The squared stack of white copy paper rests on the left shelf. The shelf edge, upright glass-door mullions and a strip of the counter with its pages stay in view. The desk lamp casts steady warm light and soft blue dusk remains visible through the glass. The woman studies the pages for a beat. At about two seconds she raises her eyes to the man and asks in a low, even voice: <d>[Chinese] 今天相亲结果怎么样？</d> During the quiet pause, the eye-level camera remains on its tripod and the lens makes a very slight optical zoom in at slow speed, holding the same medium framing. Around 5.5 seconds the man lifts his gaze to her, takes a short breath and answers quietly: <d>[Chinese] 挺顺利的，我们约了下周再见。</d> The woman nods once. He returns his eyes to the pages. The shot settles with both people, the shelf and the edge of the counter still visible.
+
+overall_soundscape: Quiet, even indoor room tone and very faint street ambience. A soft breath separates the two short steady voices. Hold the quiet room tone throughout.
+
+non_diegetic_music: N/A

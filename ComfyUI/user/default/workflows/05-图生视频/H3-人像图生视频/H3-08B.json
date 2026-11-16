@@ -1,0 +1,1334 @@
+{
+  "id": "83460cbd-4b07-4439-90d3-3b74dcbaa157",
+  "revision": 0,
+  "last_node_id": 45,
+  "last_link_id": 31,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "RandomNoise",
+      "title": "固定种子 · 411064",
+      "pos": [
+        1655,
+        463
+      ],
+      "size": [
+        295,
+        110
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "NOISE",
+          "type": "NOISE",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RandomNoise"
+      },
+      "widgets_values": [
+        411064,
+        "fixed"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "H3NativeUNETLoader",
+      "title": "加载 FL2VA INT8",
+      "pos": [
+        925,
+        654
+      ],
+      "size": [
+        320,
+        110
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3NativeUNETLoader"
+      },
+      "widgets_values": [
+        "minimax_h3_fl2va_pruned_int8_convrot.safetensors"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "H3MemoryOptimization",
+      "title": "权重与注意力内存设置",
+      "pos": [
+        1290,
+        478
+      ],
+      "size": [
+        320,
+        260
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3MemoryOptimization"
+      },
+      "widgets_values": [
+        "auto",
+        "auto",
+        4096,
+        true,
+        "Auto",
+        "Auto",
+        "Auto",
+        "Lower VRAM (slower)"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "LoraLoaderModelOnly",
+      "title": "TaoMate 三步 · 强度 1.0",
+      "pos": [
+        925,
+        800
+      ],
+      "size": [
+        320,
+        118
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "minimax_h3_taomate_fl2va_3step_avg_rank_19_bf16.safetensors",
+        1.0
+      ]
+    },
+    {
+      "id": 5,
+      "type": "MiniMaxH3SigmaShift",
+      "title": "音画时间映射 · 12／3",
+      "pos": [
+        1290,
+        330
+      ],
+      "size": [
+        320,
+        112
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MiniMaxH3SigmaShift"
+      },
+      "widgets_values": [
+        12.0,
+        3.0
+      ]
+    },
+    {
+      "id": 6,
+      "type": "H3SparseAttentionAdvanced",
+      "title": "稀疏注意力 · 1×8×8 · 29%／15%／7%",
+      "pos": [
+        1290,
+        773
+      ],
+      "size": [
+        320,
+        282
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            9,
+            25
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3SparseAttentionAdvanced"
+      },
+      "widgets_values": [
+        0.15,
+        1,
+        0.29,
+        1,
+        0.07,
+        "Kitchen INT8 64Q x 128KV (Faster)",
+        "Hold",
+        "1x8x8"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "H3NativeVAELoader",
+      "title": "首帧与出片共用 · INT8 视频 VAE",
+      "pos": [
+        0,
+        800
+      ],
+      "size": [
+        300,
+        118
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            7,
+            16,
+            21,
+            26,
+            30
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3NativeVAELoader"
+      },
+      "widgets_values": [
+        "minimax_h3_video_vae_int8_convrot.safetensors"
+      ]
+    },
+    {
+      "id": 9,
+      "type": "LoadImage",
+      "title": "换首图",
+      "pos": [
+        0,
+        330
+      ],
+      "size": [
+        300,
+        270
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "H3/native1080/drama/riverside-court-native2k.png",
+        "image"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "ImageScale",
+      "title": "原生尺寸预处理 · 1920×1088",
+      "pos": [
+        0,
+        640
+      ],
+      "size": [
+        300,
+        120
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 6
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            8
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        1920,
+        1088,
+        "center"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "H3NativeConditioning",
+      "title": "改对白和场景提示词",
+      "pos": [
+        340,
+        330
+      ],
+      "size": [
+        510,
+        585
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 7
+        },
+        {
+          "name": "first_frame",
+          "type": "IMAGE",
+          "link": 8
+        },
+        {
+          "name": "last_frame",
+          "type": "IMAGE",
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            10,
+            20
+          ]
+        },
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3NativeConditioning"
+      },
+      "widgets_values": [
+        "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+        "For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.\n\nintegrated_multimodal_description: [Shot 1] A live-action contemporary Chinese drama on the riverfront basketball court in <Picture 1> just after rain. A single continuous eye-level medium two-shot holds both faces and shoulders in focus, the woman in the dark teal canvas jacket on the left (S1) and the man in the rust-brown jacket with an orange basketball held low at his hip on the right (S2). The court lamp, backboard, riverside railing and skyline remain in the same positions. Even blue dusk and the warm court lamp light the two naturally. At about two seconds the woman looks directly at him and asks softly: <d>[Chinese] 明天还来吗？</d> She waits and listens. He keeps the ball steady at his hip, meets her gaze and around five seconds answers with quiet resolve: <d>[Chinese] 来。球我带。</d> Her mouth settles into a small, relieved smile. Both breathe naturally as the conversation falls quiet. A gentle steady breeze moves loose strands of hair. The camera remains on the same eye-level composition for the whole ten seconds.\n\noverall_soundscape: Soft outdoor court ambience with a faint distant traffic wash. A light cloth rustle during the pause. Two distinct natural Mandarin voices in turn, then a little open-air room tone.\n\nnon_diegetic_music: N/A",
+        1280,
+        12.5,
+        243
+      ]
+    },
+    {
+      "id": 12,
+      "type": "BasicGuider",
+      "title": "正向引导",
+      "pos": [
+        1655,
+        330
+      ],
+      "size": [
+        295,
+        96
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 9
+        },
+        {
+          "name": "conditioning",
+          "type": "CONDITIONING",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "GUIDER",
+          "type": "GUIDER",
+          "links": [
+            12
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "BasicGuider"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 13,
+      "type": "KSamplerSelect",
+      "title": "Euler",
+      "pos": [
+        1655,
+        603
+      ],
+      "size": [
+        295,
+        98
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSamplerSelect"
+      },
+      "widgets_values": [
+        "euler"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "ManualSigmas",
+      "title": "三步噪声点",
+      "pos": [
+        1655,
+        733
+      ],
+      "size": [
+        295,
+        94
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "links": [
+            14
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ManualSigmas"
+      },
+      "widgets_values": [
+        "1.0, 0.961165, 0.853333, 0.0"
+      ]
+    },
+    {
+      "id": 15,
+      "type": "H3NativeSampler",
+      "title": "三步原生采样",
+      "pos": [
+        1655,
+        860
+      ],
+      "size": [
+        295,
+        144
+      ],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "noise",
+          "type": "NOISE",
+          "link": 11
+        },
+        {
+          "name": "guider",
+          "type": "GUIDER",
+          "link": 12
+        },
+        {
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 13
+        },
+        {
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 14
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 15
+        },
+        {
+          "name": "keyframe_vae",
+          "type": "VAE",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            17
+          ]
+        },
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3NativeSampler"
+      },
+      "widgets_values": [
+        13.25
+      ]
+    },
+    {
+      "id": 16,
+      "type": "H3ResearchArchiveAVLatent",
+      "title": "保存 AV latent",
+      "pos": [
+        2020,
+        330
+      ],
+      "size": [
+        340,
+        100
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 17
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            24,
+            27,
+            29
+          ]
+        },
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3ResearchArchiveAVLatent"
+      },
+      "widgets_values": [
+        "H3/H3-08B/av"
+      ]
+    },
+    {
+      "id": 19,
+      "type": "H3NativeVAELoader",
+      "title": "FP32 音频 VAE",
+      "pos": [
+        2020,
+        792
+      ],
+      "size": [
+        340,
+        100
+      ],
+      "flags": {},
+      "order": 15,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            28
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3NativeVAELoader"
+      },
+      "widgets_values": [
+        "minimax_h3_audio_vae_fp32.safetensors"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "H3NativeDecodeAudio",
+      "title": "解码对白和环境声",
+      "pos": [
+        2020,
+        925
+      ],
+      "size": [
+        340,
+        98
+      ],
+      "flags": {},
+      "order": 16,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 28
+        },
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "AUDIO",
+          "type": "AUDIO",
+          "links": [
+            31
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "H3NativeDecodeAudio"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 22,
+      "type": "H3NativeSave",
+      "title": "交付视频 · 1920×1080／24 fps／10 秒",
+      "pos": [
+        2400,
+        330
+      ],
+      "size": [
+        375,
+        398
+      ],
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 29
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 30
+        },
+        {
+          "name": "audio",
+          "type": "AUDIO",
+          "link": 31
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "H3NativeSave"
+      },
+      "widgets_values": [
+        "H3/H3-08B/video",
+        16,
+        "libx264",
+        240
+      ]
+    },
+    {
+      "id": 25,
+      "type": "LoraLoaderModelOnly",
+      "title": "Realism 人物 · 强度 0.6",
+      "pos": [
+        925,
+        952
+      ],
+      "size": [
+        320,
+        118
+      ],
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoraLoaderModelOnly"
+      },
+      "widgets_values": [
+        "h3-realism-people-t2v-i2v-r2v.safetensors",
+        0.6
+      ]
+    },
+    {
+      "id": 40,
+      "type": "MarkdownNote",
+      "title": "H3-08B · 原生 1080P 十秒 · 中步 15% · 动态备选",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        1240,
+        248
+      ],
+      "flags": {},
+      "order": 19,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [],
+      "properties": {},
+      "widgets_values": [
+        "换首图 → 编辑场景和对白 → 点一次「运行」。\n1920×1080 · 24 fps · 10 秒 · TaoMate 三步 · Realism 0.6 · 1×8×8 · 29%／15%／7%。\n默认示例实测 原生 2K 球场首图 · 215.59 秒 · 整卡 8.82 GiB · 整机 15.83 GiB。\n大幅横移对照 203.21 秒 · 整卡 9.12 GiB · 整机 15.85 GiB。\n输出位置 ComfyUI/output/H3/H3-08B/。"
+      ],
+      "color": "#432",
+      "bgcolor": "#654"
+    },
+    {
+      "type": "PrimitiveString",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveString"
+      },
+      "widgets_values": [
+        "minimax_h3_fl2va_pruned_int8_convrot.safetensors"
+      ],
+      "id": 41,
+      "pos": [
+        925,
+        330
+      ],
+      "size": [
+        320,
+        98
+      ],
+      "mode": 0,
+      "flags": {},
+      "title": "FL2VA · 扩散模型文件",
+      "order": 20
+    },
+    {
+      "type": "PrimitiveString",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PrimitiveString"
+      },
+      "widgets_values": [
+        "minimax_h3_audio_vae_fp32.safetensors"
+      ],
+      "id": 44,
+      "pos": [
+        2020,
+        464
+      ],
+      "size": [
+        340,
+        95
+      ],
+      "mode": 0,
+      "flags": {},
+      "title": "音频 VAE 文件",
+      "order": 21
+    },
+    {
+      "id": 42,
+      "type": "MOSSCharacterStageRelease",
+      "pos": [
+        925,
+        462
+      ],
+      "size": [
+        320,
+        164
+      ],
+      "flags": {},
+      "order": 22,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "value",
+          "localized_name": "阶段结果",
+          "type": "*",
+          "link": 19,
+          "shape": 7
+        },
+        {
+          "name": "after",
+          "localized_name": "同时等待",
+          "type": "*",
+          "link": 20,
+          "shape": 7
+        },
+        {
+          "name": "clip",
+          "localized_name": "释放编码器",
+          "type": "CLIP",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "model",
+          "localized_name": "释放模型",
+          "type": "MODEL",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "vae",
+          "localized_name": "释放 VAE",
+          "type": "VAE",
+          "link": 21,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "原结果",
+          "type": "*",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MOSSCharacterStageRelease"
+      },
+      "widgets_values": [
+        true
+      ],
+      "title": "首图条件完成 · 释放首帧 VAE"
+    },
+    {
+      "id": 45,
+      "type": "MOSSCharacterStageRelease",
+      "pos": [
+        2020,
+        594
+      ],
+      "size": [
+        340,
+        162
+      ],
+      "flags": {},
+      "order": 23,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "value",
+          "localized_name": "阶段结果",
+          "type": "*",
+          "link": 23,
+          "shape": 7
+        },
+        {
+          "name": "after",
+          "localized_name": "同时等待",
+          "type": "*",
+          "link": 24,
+          "shape": 7
+        },
+        {
+          "name": "clip",
+          "localized_name": "释放编码器",
+          "type": "CLIP",
+          "link": null,
+          "shape": 7
+        },
+        {
+          "name": "model",
+          "localized_name": "释放模型",
+          "type": "MODEL",
+          "link": 25,
+          "shape": 7
+        },
+        {
+          "name": "vae",
+          "localized_name": "释放 VAE",
+          "type": "VAE",
+          "link": 26,
+          "shape": 7
+        }
+      ],
+      "outputs": [
+        {
+          "name": "原结果",
+          "type": "*",
+          "links": [
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MOSSCharacterStageRelease"
+      },
+      "widgets_values": [
+        true
+      ],
+      "title": "采样归档后 · 释放扩散模型"
+    }
+  ],
+  "links": [
+    [
+      1,
+      42,
+      0,
+      2,
+      0,
+      "*"
+    ],
+    [
+      2,
+      5,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      3,
+      2,
+      0,
+      4,
+      0,
+      "MODEL"
+    ],
+    [
+      4,
+      25,
+      0,
+      5,
+      0,
+      "MODEL"
+    ],
+    [
+      5,
+      3,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      6,
+      9,
+      0,
+      10,
+      0,
+      "IMAGE"
+    ],
+    [
+      7,
+      8,
+      0,
+      11,
+      0,
+      "VAE"
+    ],
+    [
+      8,
+      10,
+      0,
+      11,
+      1,
+      "IMAGE"
+    ],
+    [
+      9,
+      6,
+      0,
+      12,
+      0,
+      "MODEL"
+    ],
+    [
+      10,
+      11,
+      0,
+      12,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      11,
+      1,
+      0,
+      15,
+      0,
+      "NOISE"
+    ],
+    [
+      12,
+      12,
+      0,
+      15,
+      1,
+      "GUIDER"
+    ],
+    [
+      13,
+      13,
+      0,
+      15,
+      2,
+      "SAMPLER"
+    ],
+    [
+      14,
+      14,
+      0,
+      15,
+      3,
+      "SIGMAS"
+    ],
+    [
+      15,
+      11,
+      1,
+      15,
+      4,
+      "LATENT"
+    ],
+    [
+      16,
+      8,
+      0,
+      15,
+      5,
+      "VAE"
+    ],
+    [
+      17,
+      15,
+      0,
+      16,
+      0,
+      "LATENT"
+    ],
+    [
+      18,
+      4,
+      0,
+      25,
+      0,
+      "MODEL"
+    ],
+    [
+      19,
+      41,
+      0,
+      42,
+      0,
+      "STRING"
+    ],
+    [
+      20,
+      11,
+      0,
+      42,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      21,
+      8,
+      0,
+      42,
+      4,
+      "VAE"
+    ],
+    [
+      22,
+      45,
+      0,
+      19,
+      0,
+      "*"
+    ],
+    [
+      23,
+      44,
+      0,
+      45,
+      0,
+      "STRING"
+    ],
+    [
+      24,
+      16,
+      0,
+      45,
+      1,
+      "LATENT"
+    ],
+    [
+      25,
+      6,
+      0,
+      45,
+      3,
+      "MODEL"
+    ],
+    [
+      26,
+      8,
+      0,
+      45,
+      4,
+      "VAE"
+    ],
+    [
+      27,
+      16,
+      0,
+      20,
+      1,
+      "LATENT"
+    ],
+    [
+      28,
+      19,
+      0,
+      20,
+      0,
+      "VAE"
+    ],
+    [
+      29,
+      16,
+      0,
+      22,
+      0,
+      "LATENT"
+    ],
+    [
+      30,
+      8,
+      0,
+      22,
+      1,
+      "VAE"
+    ],
+    [
+      31,
+      20,
+      0,
+      22,
+      2,
+      "AUDIO"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "首图与对白",
+      "bounding": [
+        -22,
+        271,
+        897,
+        679
+      ],
+      "color": "#356677",
+      "font_size": 27,
+      "flags": {}
+    },
+    {
+      "id": 2,
+      "title": "三步采样",
+      "bounding": [
+        902,
+        271,
+        1074,
+        823
+      ],
+      "color": "#534972",
+      "font_size": 27,
+      "flags": {}
+    },
+    {
+      "id": 3,
+      "title": "音画输出",
+      "bounding": [
+        1997,
+        271,
+        800,
+        788
+      ],
+      "color": "#476857",
+      "font_size": 27,
+      "flags": {}
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.56,
+      "offset": [
+        30,
+        38
+      ]
+    }
+  },
+  "version": 0.4
+}
